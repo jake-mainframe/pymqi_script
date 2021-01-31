@@ -1,1 +1,1 @@
-# pymqi_script
+python-mq
