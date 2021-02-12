@@ -1,5 +1,26 @@
-python3 mq_main_script.py --port 1414 --channel DEV.ADMIN.SVRCONN --use_client_auth 
+Requirements:
+pip3 install pyqmi
+download this from IBM and install 9.1.0.6-IBM-MQC-UbuntuLinuxX64.tar.gz
 
+Test Dockers:
+sudo docker run --name mqplain  --env LICENSE=accept   --env MQ_QMGR_NAME=QM1   --publish 1414:1414   --publish 9444:9443   --detach   ibmcom/mq:9.1.3.0
+
+sudo docker run --name mqtls --env LICENSE=accept --env MQ_QMGR_NAME=QM2 --volume /home/mainframe/keys/server:/etc/mqm/pki/keys/mykey --publish 1415:1414 --publish 9443:9443 --detach  ibmcom/mq:9.1.3.0
+
+Example Instructions:
+python3 mq_main_script.py --port 1414 --channel DEV.ADMIN.SVRCONN --use_client_auth --dump_conf
 python3 mq_main_script.py --port 1415 --channel DEV.ADMIN.SVRCONN --queue_manager QM2 --use_client_auth --use_ssl
 
-more flexible punch-q
+Benefits Over Punch-Q:
+Can use SSL (good for SSLAUTH optional)
+You dont have to send a username and password (good for CHECK_CLIENT_BINDING optional) 
+Dump Conf dumps the configuration of the MQ using PCF (nice for writing reports when all you have been given is read only mq explorer access)
+Hopefully more extensible, added a function to add your own code
+
+Disadvantages Over Punch-Q:
+No Enumeration
+Doesnt look as nice
+No preset up Docker
+
+TODO:
+mq_altuser.py and mq_auth_optional not intergrated with mq_main_script yet
