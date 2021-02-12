@@ -14,6 +14,7 @@ arg_parser.add_argument("--channel", type=str, default="SYSTEM.ADMIN.SVRCONN")
 #AUTHENTICATION
 
 #if client auth is none or optional, dont use --use_client_auth
+#adduser ditto
 #usermod -l [client_id] ditto
 #sudo su [client_id]
 #python3 mq_main_script.py
@@ -46,11 +47,17 @@ arg_parser.add_argument("--start_args", type=str, default="/tmp/mkdir_test")
 arg_parser.add_argument("--service_dont_run", action="store_true")
 arg_parser.add_argument("--service_dont_delete", action="store_true")
 
+#space to run your own code
+arg_parser.add_argument("--user_func", action="store_true")
+
 
 
 args = arg_parser.parse_args()
 
 
+
+def user_func():
+	print("Add your own code here")
 
 
 def connect():
@@ -114,15 +121,10 @@ def main():
 		dump_all(qmgr,bytes(args.reply_queue_name,encoding='utf8'))
 	if (args.make_service):
 		make_service()
+	if (args.user_func):
+		user_func()
 	qmgr.disconnect()
 
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
