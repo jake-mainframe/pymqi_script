@@ -24,3 +24,5 @@ No preset up Docker
 
 TODO:
 mq_altuser.py and mq_auth_optional not intergrated with mq_main_script yet
+
+nc 127.0.0.1 1415 < init.bin - enum queue manager
