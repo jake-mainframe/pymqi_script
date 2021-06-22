@@ -34,6 +34,10 @@ arg_parser.add_argument("--server_cert", type=str, default="server_cert")
 arg_parser.add_argument("--browse_queue", action="store_true")
 arg_parser.add_argument("--browse_queue_name", type=str, default="DEV.QUEUE.1")
 
+arg_parser.add_argument("--put_queue", action="store_true")
+arg_parser.add_argument("--put_queue_name", type=str, default="DEV.QUEUE.1")
+arg_parser.add_argument("--put_message", type=str, default="TEST MESSAGE")
+
 arg_parser.add_argument("--dump_conf", action="store_true")
 #SYSTEM.MQEXPLORER.REPLY.MODEL - MQ Explorer Reply Queue
 #SYSTEM.MQSC.REPLY.QUEUE - Generic Command Replay Queue
@@ -87,7 +91,7 @@ def connect():
 
 
 def browse_queue():
-	queue = pymqi.Queue(qmgr, str(args.browse_queue_name), pymqi.CMQC.MQOO_BROWSE)
+	queue = pymqi.Queue(qmgr, args.browse_queue_name, pymqi.CMQC.MQOO_BROWSE)
 
 	current_options = pymqi.GMO()
 	current_options.Options = pymqi.CMQC.MQGMO_BROWSE_FIRST 
@@ -96,6 +100,13 @@ def browse_queue():
 	message = queue.get(None, md, current_options)
 	print("Browsing Top Message Of " + str(args.browse_queue_name))
 	print(str(message))
+
+def put_queue():
+	queue = pymqi.Queue(qmgr, args.put_queue_name)
+	queue.put(args.put_message)
+	print("Putting message onto " + str(args.put_queue_name))
+	queue.close()
+	
 
 def make_service():
 	service_create_pcf_arg = {
@@ -117,6 +128,8 @@ def main():
 	connect()
 	if(args.browse_queue):
 		browse_queue()
+	if(args.put_queue):
+		put_queue()
 	if(args.dump_conf):
 		dump_all(qmgr,bytes(args.reply_queue_name,encoding='utf8'))
 	if (args.make_service):
