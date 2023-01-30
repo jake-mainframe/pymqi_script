@@ -1,5 +1,5 @@
 Requirements:
-pip3 install pyqmi
+pip3 install pymqi
 download this from IBM and install 9.1.0.6-IBM-MQC-UbuntuLinuxX64.tar.gz
 
 Test Dockers:
